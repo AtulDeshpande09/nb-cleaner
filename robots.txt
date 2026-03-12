@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://AtulDeshpande09.github.io/nb-cleaner/sitemap.xml
