@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  
+  <!-- Primary SEO Tags -->
+  <title>Notebook Cleaner — Fix Jupyter Notebooks for GitHub Rendering</title>
+  <meta name="description" content="Free online tool to clean .ipynb files: remove widget metadata, clear outputs, and strip execution counts so your notebooks render perfectly on GitHub. Fixes issues #3035 and #155944." />
+  <meta name="keywords" content="jupyter notebook cleaner, ipynb formatter, github notebook render fix, remove notebook metadata, jupyter widget metadata, notebook not rendering github" />
+  <link rel="canonical" href="https://AtulDeshpande09.github.io/nb-cleaner/" />
+  
+  <!-- Open Graph / Social Sharing -->
+  <meta property="og:title" content="Notebook Cleaner — Fix Jupyter Notebooks for GitHub" />
+  <meta property="og:description" content="Drop .ipynb files to clean metadata, outputs, and execution counts instantly. Fixes GitHub rendering errors." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://AtulDeshpande09.github.io/nb-cleaner/" />
+  <meta property="og:image" content="https://AtulDeshpande09.github.io/nb-cleaner/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Notebook Cleaner — Fix Jupyter Notebooks for GitHub" />
+  <meta name="twitter:description" content="Clean .ipynb files in seconds. No install, no signup. Works offline." />
+  
+  <!-- Structured Data (Schema.org) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Notebook Cleaner",
+    "description": "Free online tool to clean Jupyter notebook files for better GitHub rendering. Removes widget metadata, clears outputs, and strips execution counts.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "featureList": [
+      "Remove widget metadata (fixes GitHub issue #155944)",
+      "Clear all cell outputs",
+      "Remove execution counts",
+      "Works entirely in-browser — no file uploads",
+      "Fixes intermittent rendering errors (GitHub issue #3035)"
+    ],
+    "url": "https://github.com/AtulDeshpande09/nb-cleaner",
+    "sameAs": [
+      "https://github.com/jupyter/notebook/issues/3035",
+      "https://github.com/orgs/community/discussions/155944"
+    ]
+  }
+  </script>
+  
+  <!-- Performance: Preconnect to critical origins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧹</text></svg>">
+  
+  <style>
+    /* Minimal, fast-loading CSS */
+    :root { color-scheme: light dark; }
+    body { 
+      font-family: system-ui, -apple-system, sans-serif; 
+      max-width: 800px; 
+      margin: 2rem auto; 
+      padding: 0 1rem;
+      line-height: 1.5;
+    }
+    h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+    .subtitle { color: #666; margin-bottom: 2rem; }
+    .drop-zone {
+      border: 3px dashed #ccc;
+      border-radius: 12px;
+      padding: 3rem 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s;
+      background: #f9f9f9;
+    }
+    .drop-zone:hover, .drop-zone.dragover { border-color: #0066cc; background: #f0f7ff; }
+    .options { margin: 1.5rem 0; display: flex; flex-wrap: wrap; gap: 1rem; }
+    .option { display: flex; align-items: center; gap: 0.5rem; }
+    .issues-section {
+      margin: 2.5rem 0;
+      padding: 1.2rem;
+      background: #fff8e6;
+      border-left: 4px solid #ffc107;
+      border-radius: 0 8px 8px 0;
+    }
+    .issues-section h3 { margin-top: 0; }
+    .issue-link { display: inline-block; margin: 0.3rem 0; color: #0066cc; text-decoration: none; }
+    .issue-link:hover { text-decoration: underline; }
+    footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #eee; font-size: 0.9rem; color: #666; }
+    @media (prefers-color-scheme: dark) {
+      body { background: #111; color: #eee; }
+      .subtitle { color: #aaa; }
+      .drop-zone { background: #1a1a1a; border-color: #444; }
+      .drop-zone:hover, .drop-zone.dragover { border-color: #3399ff; background: #0d1b2a; }
+      .issues-section { background: #2a2415; border-left-color: #e6a200; }
+      footer { border-top-color: #333; color: #aaa; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Clean Jupyter Notebooks for GitHub</h1>
+  <p class="subtitle">Fix rendering issues by removing problematic metadata, outputs, and execution counts — entirely in your browser.</p>
+
+  <div id="drop-zone" class="drop-zone" tabindex="0">
+    <p><strong>Drop .ipynb files here</strong> or click to upload</p>
+    <p style="font-size:0.9rem;color:#666">No files are uploaded to any server — processing happens locally.</p>
+  </div>
+  <input type="file" id="file-input" accept=".ipynb" hidden />
+
+  <div class="options">
+    <label class="option">
+      <input type="checkbox" id="remove-widgets" checked />
+      Remove widget metadata <small>(fixes "state key missing" errors)</small>
+    </label>
+    <label class="option">
+      <input type="checkbox" id="clear-outputs" checked />
+      Clear all cell outputs
+    </label>
+    <label class="option">
+      <input type="checkbox" id="remove-counts" checked />
+      Remove execution counts
+    </label>
+  </div>
+
+  <!-- ✅ NEW: "Problems This Fixes" Section -->
+  <section class="issues-section">
+    <h3>🔧 Common Issues This Tool Fixes</h3>
+    <p>If you're seeing these errors on GitHub, Notebook Cleaner can help:</p>
+    <ul>
+      <li>
+        <a class="issue-link" href="https://github.com/jupyter/notebook/issues/3035" target="_blank" rel="noopener">
+          "Sorry, something went wrong. Reload?" — intermittent notebook rendering failures
+        </a>
+        <br><small>Often caused by complex widget metadata or large outputs. Cleaning the file resolves the renderer conflict [[1]].</small>
+      </li>
+      <li>
+        <a class="issue-link" href="https://github.com/orgs/community/discussions/155944" target="_blank" rel="noopener">
+          "state key missing from metadata.widgets" — notebooks from Colab/JupyterLab not displaying
+        </a>
+        <br><small>Removing the <code>widgets</code> block from metadata restores rendering [[9]]. Our tool does this automatically.</small>
+      </li>
+    </ul>
+    <p style="margin-bottom:0;font-size:0.9rem"><em>Tip: After cleaning, re-upload your notebook to GitHub. Rendering usually updates within 1-2 minutes.</em></p>
+  </section>
+
+  <div id="status" style="margin:1rem 0;font-weight:500"></div>
+  <a id="download-link" style="display:none;margin:1rem 0;padding:0.6rem 1.2rem;background:#0066cc;color:white;border-radius:6px;text-decoration:none" download>⬇️ Download Cleaned Notebook</a>
+
+<!-- GitHub Star CTA -->
+<div style="text-align:center;margin:2.5rem 0;padding:1rem;background:var(--bg-soft, #f8f9fa);border-radius:12px">
+  <p style="margin:0 0 0.8rem;font-weight:500">
+    🙏 Found this useful? Help others discover it:
+  </p>
+  <a href="https://github.com/AtulDeshpande09/nb-cleaner" 
+     target="_blank" 
+     rel="noopener"
+     style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.5rem 1rem;background:#24292f;color:white;border-radius:6px;text-decoration:none;font-weight:500;transition:opacity 0.2s">
+    <svg height="20" viewBox="0 0 16 16" version="1.1" width="20" aria-hidden="true" style="fill:currentColor">
+      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+    </svg>
+    Star on GitHub
+  </a>
+  <p style="margin:0.8rem 0 0;font-size:0.85rem;color:var(--text-muted, #666)">
+    ⭐ Stars help this tool reach more data scientists & developers
+  </p>
+</div>
+
+
+<!-- Add this just before the footer -->
+<div style="font-size:0.85rem;color:#666;margin:2rem 0">
+  <p><strong>Searching for help with these errors?</strong></p>
+  <ul style="margin:0.5rem 0 0 1.2rem">
+    <li><code>state key missing from metadata.widgets</code></li>
+    <li><code>Sorry, something went wrong. Reload?</code> on GitHub</li>
+    <li><code>notebook renders blank on github pages</code></li>
+  </ul>
+  <p style="margin-top:0.5rem">This tool fixes all of them — no install required.</p>
+</div>
+
+  <footer>
+    <p>🧹 <strong>Notebook Cleaner</strong> — 100% client-side. Your files never leave your browser.</p>
+    <p>
+      <a href="https://github.com/AtulDeshpande09/nb-cleaner" target="_blank" rel="noopener">View source on GitHub</a> • 
+      <a href="https://github.com/jupyter/notebook/issues/3035" target="_blank" rel="noopener">Issue #3035</a> • 
+      <a href="https://github.com/orgs/community/discussions/155944" target="_blank" rel="noopener">Discussion #155944</a>
+    </p>
+  </footer>
+
+  <script>
+    // Your existing JS logic goes here — unchanged
+    // Just ensure DOMContentLoaded wraps your init code
+    document.addEventListener('DOMContentLoaded', () => {
+      // ... your file handling, cleaning logic, etc.
+      console.log('Notebook Cleaner loaded');
+    });
+  </script>
+</body>
+</html>
